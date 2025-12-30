@@ -16,20 +16,44 @@ interface ValidationResult {
   errorMessage?: string;
 }
 
-const numberTypeLabels: Record<string, string> = {
-  FIXED_LINE: "Fixed Line",
-  MOBILE: "Mobile",
-  FIXED_LINE_OR_MOBILE: "Fixed Line or Mobile",
-  TOLL_FREE: "Toll Free",
-  PREMIUM_RATE: "Premium Rate",
-  SHARED_COST: "Shared Cost",
-  VOIP: "VoIP",
-  PERSONAL_NUMBER: "Personal Number",
-  PAGER: "Pager",
-  UAN: "UAN",
-  VOICEMAIL: "Voicemail",
-  UNKNOWN: "Unknown",
+// Number type IDs from libphonenumber
+const NumberType = {
+  FIXED_LINE: 0,
+  MOBILE: 1,
+  FIXED_LINE_OR_MOBILE: 2,
+  TOLL_FREE: 3,
+  PREMIUM_RATE: 4,
+  SHARED_COST: 5,
+  VOIP: 6,
+  PERSONAL_NUMBER: 7,
+  PAGER: 8,
+  UAN: 9,
+  VOICEMAIL: 10,
+  UNKNOWN: -1,
+} as const;
+
+const numberTypeLabels: Record<number, string> = {
+  [NumberType.FIXED_LINE]: "Fixed Line",
+  [NumberType.MOBILE]: "Mobile",
+  [NumberType.FIXED_LINE_OR_MOBILE]: "Fixed Line or Mobile",
+  [NumberType.TOLL_FREE]: "Toll Free",
+  [NumberType.PREMIUM_RATE]: "Premium Rate",
+  [NumberType.SHARED_COST]: "Shared Cost",
+  [NumberType.VOIP]: "VoIP",
+  [NumberType.PERSONAL_NUMBER]: "Personal Number",
+  [NumberType.PAGER]: "Pager",
+  [NumberType.UAN]: "UAN",
+  [NumberType.VOICEMAIL]: "Voicemail",
+  [NumberType.UNKNOWN]: "Unknown",
 };
+
+// Number format IDs from libphonenumber
+const NumberFormat = {
+  E164: 0,
+  INTERNATIONAL: 1,
+  NATIONAL: 2,
+  RFC3966: 3,
+} as const;
 
 const errorMessages: Record<number, string> = {
   1: "Invalid country code",
@@ -116,25 +140,21 @@ export default function PhoneValidator() {
     }
 
     const numberType = iti.getNumberType();
-    const numberTypeKey = Object.keys(window.intlTelInputUtils?.numberType || {}).find(
-      (key) => (window.intlTelInputUtils?.numberType as Record<string, number>)?.[key] === numberType
-    ) || "UNKNOWN";
+    const isMobile = numberType === NumberType.MOBILE || numberType === NumberType.FIXED_LINE_OR_MOBILE;
+    const isFixedLine = numberType === NumberType.FIXED_LINE || numberType === NumberType.FIXED_LINE_OR_MOBILE;
 
     // Check type filter
     if (numberTypeFilter.value !== "any") {
-      const isMobile = numberTypeKey === "MOBILE" || numberTypeKey === "FIXED_LINE_OR_MOBILE";
-      const isFixedLine = numberTypeKey === "FIXED_LINE" || numberTypeKey === "FIXED_LINE_OR_MOBILE";
-
       if (numberTypeFilter.value === "mobile" && !isMobile) {
         result.value = {
           isValid: false,
           number: inputRef.current.value,
           countryCode: numberData.iso2?.toUpperCase() || "",
           countryName: numberData.name || "",
-          nationalNumber: iti.getNumber(window.intlTelInputUtils?.numberFormat?.NATIONAL) || "",
-          internationalNumber: iti.getNumber(window.intlTelInputUtils?.numberFormat?.INTERNATIONAL) || "",
-          numberType: numberTypeLabels[numberTypeKey] || numberTypeKey,
-          errorMessage: `Expected mobile number, got ${numberTypeLabels[numberTypeKey] || numberTypeKey}`,
+          nationalNumber: iti.getNumber(NumberFormat.NATIONAL) || "",
+          internationalNumber: iti.getNumber(NumberFormat.INTERNATIONAL) || "",
+          numberType: numberTypeLabels[numberType] || "Unknown",
+          errorMessage: `Expected mobile number, got ${numberTypeLabels[numberType] || "Unknown"}`,
         };
         return;
       }
@@ -145,10 +165,10 @@ export default function PhoneValidator() {
           number: inputRef.current.value,
           countryCode: numberData.iso2?.toUpperCase() || "",
           countryName: numberData.name || "",
-          nationalNumber: iti.getNumber(window.intlTelInputUtils?.numberFormat?.NATIONAL) || "",
-          internationalNumber: iti.getNumber(window.intlTelInputUtils?.numberFormat?.INTERNATIONAL) || "",
-          numberType: numberTypeLabels[numberTypeKey] || numberTypeKey,
-          errorMessage: `Expected fixed line number, got ${numberTypeLabels[numberTypeKey] || numberTypeKey}`,
+          nationalNumber: iti.getNumber(NumberFormat.NATIONAL) || "",
+          internationalNumber: iti.getNumber(NumberFormat.INTERNATIONAL) || "",
+          numberType: numberTypeLabels[numberType] || "Unknown",
+          errorMessage: `Expected fixed line number, got ${numberTypeLabels[numberType] || "Unknown"}`,
         };
         return;
       }
@@ -159,9 +179,9 @@ export default function PhoneValidator() {
       number: inputRef.current.value,
       countryCode: numberData.iso2?.toUpperCase() || "",
       countryName: numberData.name || "",
-      nationalNumber: iti.getNumber(window.intlTelInputUtils?.numberFormat?.NATIONAL) || "",
-      internationalNumber: iti.getNumber(window.intlTelInputUtils?.numberFormat?.INTERNATIONAL) || "",
-      numberType: numberTypeLabels[numberTypeKey] || numberTypeKey,
+      nationalNumber: iti.getNumber(NumberFormat.NATIONAL) || "",
+      internationalNumber: iti.getNumber(NumberFormat.INTERNATIONAL) || "",
+      numberType: numberTypeLabels[numberType] || "Unknown",
     };
   };
 
@@ -308,16 +328,3 @@ export default function PhoneValidator() {
   );
 }
 
-declare global {
-  interface Window {
-    intlTelInputUtils?: {
-      numberFormat?: {
-        E164: number;
-        INTERNATIONAL: number;
-        NATIONAL: number;
-        RFC3966: number;
-      };
-      numberType?: Record<string, number>;
-    };
-  }
-}
