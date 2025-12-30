@@ -324,6 +324,55 @@ export default function PhoneValidator() {
           </div>
         </div>
       )}
+
+      {/* EU Countries Number Type Support */}
+      <details class="mt-6 bg-gray-50 rounded-lg border border-gray-200">
+        <summary class="px-4 py-3 cursor-pointer text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+          EU Countries - Number Type Support
+        </summary>
+        <div class="px-4 pb-4 overflow-x-auto">
+          <table class="w-full text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-gray-300">
+                <th class="text-left py-2 pr-4">Country</th>
+                <th class="text-left py-2 pr-4">Prefix</th>
+                <th class="text-center py-2 pr-4">Mobile</th>
+                <th class="text-center py-2">Fixed</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-600">
+              <tr><td class="py-1">Austria</td><td>+43</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Belgium</td><td>+32</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Bulgaria</td><td>+359</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Croatia</td><td>+385</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Cyprus</td><td>+357</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Czech Republic</td><td>+420</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Denmark</td><td>+45</td><td class="text-center text-green-600">Yes</td><td class="text-center text-yellow-600">~</td></tr>
+              <tr><td class="py-1">Estonia</td><td>+372</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Finland</td><td>+358</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">France</td><td>+33</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Germany</td><td>+49</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Greece</td><td>+30</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Hungary</td><td>+36</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Ireland</td><td>+353</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Italy</td><td>+39</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Latvia</td><td>+371</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Lithuania</td><td>+370</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Luxembourg</td><td>+352</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Malta</td><td>+356</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Netherlands</td><td>+31</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Poland</td><td>+48</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Portugal</td><td>+351</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Romania</td><td>+40</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Slovakia</td><td>+421</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Slovenia</td><td>+386</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Spain</td><td>+34</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+              <tr><td class="py-1">Sweden</td><td>+46</td><td class="text-center text-green-600">Yes</td><td class="text-center text-green-600">Yes</td></tr>
+            </tbody>
+          </table>
+          <p class="text-xs text-gray-500 mt-2">~ Denmark: Fixed lines return "Fixed Line or Mobile" (ranges overlap)</p>
+        </div>
+      </details>
     </div>
   );
 }
