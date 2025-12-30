@@ -1,6 +1,6 @@
-import { useSignal, useComputed } from "@preact/signals";
+import { useSignal } from "@preact/signals";
 import { useEffect, useRef } from "preact/hooks";
-import intlTelInput from "intl-tel-input";
+import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
 import "intl-tel-input/build/css/intlTelInput.css";
 
 type NumberType = "mobile" | "fixed_line" | "any";
@@ -60,7 +60,6 @@ export default function PhoneValidator() {
           .then((data) => callback(data.country_code))
           .catch(() => callback("us"));
       },
-      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.0/build/js/utils.js",
       nationalMode: false,
       formatAsYouType: true,
       formatOnDisplay: true,
@@ -68,11 +67,7 @@ export default function PhoneValidator() {
     });
 
     itiRef.current = iti;
-
-    // Wait for utils script to load before enabling validation
-    iti.promise.then(() => {
-      isLoading.value = false;
-    });
+    isLoading.value = false;
 
     return () => {
       iti.destroy();
@@ -81,9 +76,8 @@ export default function PhoneValidator() {
 
   useEffect(() => {
     if (itiRef.current && inputRef.current) {
-      isLoading.value = true;
       itiRef.current.destroy();
-      const iti = intlTelInput(inputRef.current, {
+      itiRef.current = intlTelInput(inputRef.current, {
         initialCountry: "auto",
         geoIpLookup: (callback) => {
           fetch("https://ipapi.co/json")
@@ -91,17 +85,10 @@ export default function PhoneValidator() {
             .then((data) => callback(data.country_code))
             .catch(() => callback("us"));
         },
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.0/build/js/utils.js",
         nationalMode: false,
         formatAsYouType: true,
         formatOnDisplay: true,
         strictMode: strictMode.value,
-      });
-      itiRef.current = iti;
-
-      // Wait for utils script to load before enabling validation
-      iti.promise.then(() => {
-        isLoading.value = false;
       });
     }
   }, [strictMode.value]);
