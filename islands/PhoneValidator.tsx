@@ -32,11 +32,12 @@ const numberTypeLabels: Record<string, string> = {
 };
 
 const errorMessages: Record<number, string> = {
-  0: "Invalid number",
   1: "Invalid country code",
   2: "Number too short",
   3: "Number too long",
-  4: "Invalid length",
+  4: "Not a number",
+  5: "Invalid length",
+  [-99]: "Validation unavailable",
 };
 
 export default function PhoneValidator() {
