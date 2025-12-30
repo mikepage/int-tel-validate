@@ -67,7 +67,11 @@ export default function PhoneValidator() {
     });
 
     itiRef.current = iti;
-    isLoading.value = false;
+
+    // Wait for utils script to load before enabling validation
+    iti.promise.then(() => {
+      isLoading.value = false;
+    });
 
     return () => {
       iti.destroy();
@@ -76,8 +80,9 @@ export default function PhoneValidator() {
 
   useEffect(() => {
     if (itiRef.current && inputRef.current) {
+      isLoading.value = true;
       itiRef.current.destroy();
-      itiRef.current = intlTelInput(inputRef.current, {
+      const iti = intlTelInput(inputRef.current, {
         initialCountry: "auto",
         geoIpLookup: (callback) => {
           fetch("https://ipapi.co/json")
@@ -91,11 +96,17 @@ export default function PhoneValidator() {
         formatOnDisplay: true,
         strictMode: strictMode.value,
       });
+      itiRef.current = iti;
+
+      // Wait for utils script to load before enabling validation
+      iti.promise.then(() => {
+        isLoading.value = false;
+      });
     }
   }, [strictMode.value]);
 
   const handleValidate = () => {
-    if (!itiRef.current || !inputRef.current) return;
+    if (!itiRef.current || !inputRef.current || isLoading.value) return;
 
     const iti = itiRef.current;
     const isValid = iti.isValidNumber();
@@ -229,9 +240,14 @@ export default function PhoneValidator() {
       <div class="flex gap-3 mb-6">
         <button
           onClick={handleValidate}
-          class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          disabled={isLoading.value}
+          class={`px-6 py-2 font-medium rounded-lg transition-colors ${
+            isLoading.value
+              ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
         >
-          Validate
+          {isLoading.value ? "Loading..." : "Validate"}
         </button>
         <button
           onClick={handleClear}
