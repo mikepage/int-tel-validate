@@ -4,14 +4,16 @@ import PhoneValidator from "../islands/PhoneValidator.tsx";
 
 export default define.page(function PhoneValidatorPage() {
   return (
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-[#fafafa]">
       <Head>
-        <title>Phone Validator - Validate Phone Numbers</title>
+        <title>Phone Validator</title>
       </Head>
-      <div class="px-4 py-8">
+      <div class="px-6 md:px-12 py-8">
         <div class="max-w-6xl mx-auto">
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">Phone Validator</h1>
-          <p class="text-gray-600 mb-6">
+          <h1 class="text-2xl font-normal text-[#111] tracking-tight mb-2">
+            Phone Validator
+          </h1>
+          <p class="text-[#666] text-sm mb-8">
             Validate international phone numbers with support for strict mode and type filtering.
           </p>
           <PhoneValidator />
